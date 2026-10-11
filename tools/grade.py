@@ -36,15 +36,16 @@ def grade(im,p):
     d=((x-w/2)/(w/2))**2+((y-h/2)/(h/2))**2
     a=a*(1-p['vig']*np.clip(d/2,0,1)**1.2)[...,None]
     return Image.fromarray((np.clip(a,0,1)*255).astype(np.uint8))
-for f,slug,pre in J:
-    im=Image.open(os.path.join(SRC,f)).convert('RGB')
-    if im.height>im.width: target=(1280,int(1280*im.height/im.width))
-    else:
-        tw=2200 if im.width>2500 else 1600
-        target=(tw,int(tw*im.height/im.width))
-    im=im.resize(target,Image.LANCZOS)
-    g=grade(im,P[pre]).filter(ImageFilter.UnsharpMask(1.0,45,3))
-    g.save(os.path.join(OUT,slug+'.jpg'),quality=84,optimize=True,progressive=True)
-    t=g.copy(); t.thumbnail((900,900)); t.save(os.path.join(OUT,slug+'-sm.jpg'),quality=80,optimize=True,progressive=True)
-    print(slug,g.size)
-
+if __name__=='__main__':
+    for f,slug,pre in J:
+        im=Image.open(os.path.join(SRC,f)).convert('RGB')
+        if im.height>im.width: target=(1280,int(1280*im.height/im.width))
+        else:
+            tw=2200 if im.width>2500 else 1600
+            target=(tw,int(tw*im.height/im.width))
+        im=im.resize(target,Image.LANCZOS)
+        g=grade(im,P[pre]).filter(ImageFilter.UnsharpMask(1.0,45,3))
+        g.save(os.path.join(OUT,slug+'.jpg'),quality=84,optimize=True,progressive=True)
+        t=g.copy(); t.thumbnail((900,900)); t.save(os.path.join(OUT,slug+'-sm.jpg'),quality=80,optimize=True,progressive=True)
+        print(slug,g.size)
+    
