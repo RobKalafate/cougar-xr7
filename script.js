@@ -1,53 +1,59 @@
-// Lightbox for the gallery
+// Carousels: hero (autoplay) and the three gallery albums (with thumbnails)
 (function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll('.grid .g'));
-  var lb = document.getElementById('lb');
-  if (!lb || !links.length) return;
-  var img = lb.querySelector('img'), cap = lb.querySelector('.lb__c'), i = 0;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function show(n) {
-    i = (n + links.length) % links.length;
-    img.src = links[i].getAttribute('href');
-    img.alt = links[i].querySelector('img').alt;
-    cap.textContent = links[i].querySelector('span').textContent + '  ·  ' + (i + 1) + ' / ' + links.length;
-  }
-  links.forEach(function (a, n) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      show(n);
-      lb.showModal();
+  Array.prototype.forEach.call(document.querySelectorAll('.cz'), function (root) {
+    var slides = root.querySelectorAll('.cz__slide');
+    var thumbs = root.querySelectorAll('.cz__thumbs button');
+    var count = root.querySelector('.cz__count');
+    var cap = root.querySelector('.cz__cap');
+    var stage = root.querySelector('.cz__stage');
+    var i = 0, timer = null, x0 = null;
+    if (!slides.length) return;
+
+    function show(n) {
+      slides[i].classList.remove('is-on');
+      if (thumbs[i]) thumbs[i].removeAttribute('aria-current');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('is-on');
+      if (thumbs[i]) {
+        thumbs[i].setAttribute('aria-current', 'true');
+        thumbs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+      var img = slides[i].querySelector('img');
+      img.loading = 'eager';
+      count.textContent = (i + 1) + ' / ' + slides.length;
+      cap.textContent = img.alt;
+    }
+    function play() {
+      if (!root.hasAttribute('data-auto') || reduce) return;
+      clearInterval(timer);
+      timer = setInterval(function () { show(i + 1); }, 5000);
+    }
+    function stop() { clearInterval(timer); }
+
+    root.querySelector('.cz__prev').addEventListener('click', function () { show(i - 1); play(); });
+    root.querySelector('.cz__next').addEventListener('click', function () { show(i + 1); play(); });
+    Array.prototype.forEach.call(thumbs, function (b, n) {
+      b.addEventListener('click', function () { show(n); });
     });
-  });
-  lb.querySelector('.lb__x').onclick = function () { lb.close(); };
-  lb.querySelector('.lb__p').onclick = function () { show(i - 1); };
-  lb.querySelector('.lb__n').onclick = function () { show(i + 1); };
-  lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
-  document.addEventListener('keydown', function (e) {
-    if (!lb.open) return;
-    if (e.key === 'ArrowLeft') show(i - 1);
-    if (e.key === 'ArrowRight') show(i + 1);
-  });
-})();
+    stage.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var d = e.changedTouches[0].clientX - x0;
+      if (Math.abs(d) > 40) { show(i + (d < 0 ? 1 : -1)); play(); }
+      x0 = null;
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { show(i - 1); play(); }
+      if (e.key === 'ArrowRight') { show(i + 1); play(); }
+    });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', play);
+    root.addEventListener('focusin', stop);
 
-// Hero carousel
-(function () {
-  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  if (!slides.length) return;
-  var count = document.querySelector('.car__count'), cap = document.querySelector('.car__cap'), i = 0, t;
-  function show(n) {
-    slides[i].classList.remove('is-on');
-    i = (n + slides.length) % slides.length;
-    slides[i].classList.add('is-on');
-    count.textContent = (i + 1) + ' / ' + slides.length;
-    cap.textContent = slides[i].querySelector('img').alt.replace(/^[^:]*: /, '');
-  }
-  function auto() { clearInterval(t); if (!matchMedia('(prefers-reduced-motion: reduce)').matches) t = setInterval(function () { show(i + 1); }, 5000); }
-  document.querySelector('.car__prev').onclick = function () { show(i - 1); auto(); };
-  document.querySelector('.car__next').onclick = function () { show(i + 1); auto(); };
-  var st = document.querySelector('.carousel__stage'), x0 = null;
-  st.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-  st.addEventListener('touchend', function (e) { if (x0 === null) return; var d = e.changedTouches[0].clientX - x0; if (Math.abs(d) > 40) { show(i + (d < 0 ? 1 : -1)); auto(); } x0 = null; });
-  st.addEventListener('mouseenter', function () { clearInterval(t); });
-  st.addEventListener('mouseleave', auto);
-  show(0); auto();
+    // Mark the first slide visible without JS-dependent flash
+    show(0);
+    play();
+  });
 })();

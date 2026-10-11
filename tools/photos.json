@@ -1,0 +1,178 @@
+{
+ "a": [
+  [
+   "a-01",
+   "Rear quarter",
+   [
+    836,
+    443
+   ]
+  ],
+  [
+   "a-02",
+   "Front three-quarter",
+   [
+    833,
+    442
+   ]
+  ],
+  [
+   "a-03",
+   "Rear three-quarter from above",
+   [
+    836,
+    449
+   ]
+  ],
+  [
+   "a-04",
+   "Low front three-quarter",
+   [
+    834,
+    593
+   ]
+  ],
+  [
+   "a-05",
+   "Hood and grille",
+   [
+    834,
+    556
+   ]
+  ],
+  [
+   "a-06",
+   "Rear three-quarter",
+   [
+    832,
+    591
+   ]
+  ],
+  [
+   "a-07",
+   "Hood from above",
+   [
+    832,
+    600
+   ]
+  ],
+  [
+   "a-08",
+   "White bucket seats and console",
+   [
+    833,
+    601
+   ]
+  ]
+ ],
+ "b": [
+  [
+   "b-01",
+   "Side profile, no vinyl top",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "b-02",
+   "On the highway: XR-7 dash and Rallye clock",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "b-03",
+   "Front three-quarter at dusk",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "b-04",
+   "City street at dusk",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "b-05",
+   "Side view at dusk",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "b-06",
+   "Low front three-quarter at dusk",
+   [
+    2000,
+    1500
+   ]
+  ]
+ ],
+ "c": [
+  [
+   "c-01",
+   "Front quarter under warehouse lights",
+   [
+    2000,
+    1486
+   ]
+  ],
+  [
+   "c-02",
+   "Night street",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "c-03",
+   "289 V8 engine bay",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "c-04",
+   "Sequential taillamps in the rain",
+   [
+    2000,
+    1500
+   ]
+  ],
+  [
+   "c-05",
+   "Full-width grille in the rain",
+   [
+    2000,
+    1367
+   ]
+  ],
+  [
+   "c-06",
+   "Milled wheels in the rain",
+   [
+    2000,
+    1500
+   ]
+  ]
+ ],
+ "u": [
+  [
+   "u-01",
+   "Undercarriage on the lift",
+   [
+    960,
+    1280
+   ]
+  ]
+ ]
+}
